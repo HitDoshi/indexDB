@@ -4,18 +4,67 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IndexedDB Data Management</title>
-    <link rel="stylesheet" href="styles.css" />
+
     <!-- Add your stylesheet -->
+    <link rel="stylesheet" href="styles/navBar.style.css" />
+    <link rel="stylesheet" href="styles/table.style.css" />
+    <link rel="stylesheet" href="styles/toast.style.css" />
+
+    <style></style>
+
   </head>
+
   <body>
-    <h1>Data Display</h1>
+    <!-- Navigation bar with hamburger icon -->
+    <nav>
+    <div class="navbar">
+      <div class="web-name">DB Driven Web</div>
+      <div class="icon update-icon" onclick="updateData();">✓</div>
+      <div
+        class="icon update-icon"
+        style="margin-right: 20px"
+        onclick="undoData();"
+      >
+        ↺
+      </div>
+      <div class="icon" id="toggleIcon" onclick="toggleFilterSheet()">☰</div>
+      <div class="filter-sheet" id="filterSheet">
+        <div class="filter-options">
+          <div
+            class="filter-option option1"
+            id="1"
+            onclick="selectOption('option1'); undoData(); displayData();"
+          >
+            Show All
+          </div>
+          <div
+            class="filter-option option2"
+            id="2"
+            onclick="selectOption('option2'); undoData(); displayFavData();"
+          >
+            Show Fav Only
+          </div>
+          <div
+            class="filter-option option3"
+            id="3"
+            onclick="selectOption('option3'); undoData(); displaySkipData();"
+          >
+            Show Skip Only
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
     <table id="dataTable">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Value 1</th>
-          <th>Value 2</th>
-          <th>Is Favorite</th>
+          <th style="width: fit-content">ID</th>
+          <th style="width: max-content">Value 1</th>
+          <th style="width: max-content">Value 2</th>
+          <th style="width: fit-content">Fav</th>
+          <th style="width: fit-content">Skip</th>
+          <th style="width: fit-content">Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -23,21 +72,77 @@
       </tbody>
     </table>
 
-    <h1>Favorites</h1>
-    <table id="favoritesTable">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Value 1</th>
-          <th>Value 2</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Favorite data will be populated here -->
-      </tbody>
-    </table>
+    <div class="toast-container" id="toastContainer"></div>
 
-    <script src="app.js"></script>
-    <!-- Add your JavaScript file -->
+    <script>
+      
+      let isFilterSheetOpen = false;
+
+      // Function to toggle the filter sheet and change the icon
+      function toggleFilterSheet() {
+        const sheet = document.getElementById("filterSheet");
+        const icon = document.getElementById("toggleIcon");
+
+        if (isFilterSheetOpen) {
+          sheet.style.display = "none";
+          icon.textContent = "☰"; // Change to hamburger icon
+        } else {
+          sheet.style.display = "block";
+          icon.textContent = "✕"; // Change to cross icon
+        }
+
+        isFilterSheetOpen = !isFilterSheetOpen;
+      }
+
+      // Function to select an option and change background color
+      function selectOption(option) {
+        // Reset background color for all options
+        const options = document.querySelectorAll(".filter-option");
+        options.forEach((opt) => {
+          opt.classList.remove("selected");
+        });
+
+        // Set background color for the selected option
+        const selectedOption = document.querySelector(`.${option}`);
+        selectedOption.classList.add("selected");
+
+        // Close the filter sheet
+        const filterSheet = document.getElementById("filterSheet");
+        filterSheet.style.display = "none";
+
+        // Change the icon back to the hamburger icon
+        const icon = document.getElementById("toggleIcon");
+        icon.textContent = "☰";
+
+        isFilterSheetOpen = false;
+
+        // Add logic here to handle the selected option
+        console.log("Selected Option:", option);
+      }
+
+      // Select the default option on page load
+      window.addEventListener("load", function () {
+        selectOption("option1"); // Set 'Show All' as the default selected option
+      });
+
+      // Add a click event listener to the window
+      window.addEventListener("click", function (event) {
+        const filterSheet = document.getElementById("filterSheet");
+        const toggleIcon = document.getElementById("toggleIcon");
+
+        // Check if the click target is outside the filter-sheet and toggle icon
+        if (
+          !filterSheet.contains(event.target) &&
+          !toggleIcon.contains(event.target)
+        ) {
+          filterSheet.style.display = "none"; // Hide the filter-sheet
+          toggleIcon.textContent = "☰";
+          isFilterSheetOpen = false;
+        }
+      });
+    </script>
+
+    <script src="src/app.js"></script>
+    <script src="src/displayToast.js"></script>
   </body>
 </html>
