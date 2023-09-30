@@ -263,7 +263,7 @@ function updateData() {
     hideUpdateOption();
     loadUpdatedTable();
     createToast(
-      "Data Updated !",
+      "Data updated!",
       "success-toast",
       3000
     ); // 3000ms duration

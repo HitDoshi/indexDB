@@ -34,7 +34,9 @@
 
   .close-icon {
     cursor: pointer;
-    padding-left: 10px;
+    padding-left: 12px;
+    align-items: center;
+    padding-bottom: 1px;
   }
 
   /* Progress bar styles */
@@ -48,6 +50,21 @@
     opacity: 0.8; /* Opacity of the progress bar */
     animation: progress-animation 3.2s linear none; /* Animation for progress */
   }
+
+/* Style for the hamburger icon */
+.menu-toggle.active .bar:nth-child(1) {
+    transform: rotate(45deg) translate(3px, 3px);
+    width: 25px;
+}
+
+.menu-toggle.active .bar:nth-child(2) {
+    transform: rotate(-45deg) translate(3px, -4px);
+    width: 25px;
+}
+
+.menu-toggle.active .bar:nth-child(3) {
+    display: none;
+}
 
   @keyframes progress-animation {
     0% {
